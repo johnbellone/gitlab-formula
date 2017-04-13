@@ -1,0 +1,30 @@
+---
+driver:
+  name: docker
+  privileged: true
+
+provisioner:
+  name: salt_solo
+  formula: gitlab
+  log_level: error
+
+verifier:
+  name: inspec
+  sudo: true
+
+platforms:
+  - name: centos-7
+  - name: centos-6
+  - name: ubuntu-16.04
+    provisioner:
+      salt_install: apt
+  - name: ubuntu-14.04
+    provisioner:
+      salt_install: apt
+suites:
+  - name: runner
+    pillars:
+      top.sls:
+        base:
+          '*':
+            - gitlab.runner
